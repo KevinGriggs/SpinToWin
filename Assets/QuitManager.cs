@@ -1,17 +1,12 @@
-﻿using System.Collections;
+﻿//The class simply checks if the player has hit escape and closes the game if so
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class QuitManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
+    //checks if the player has hit escape and closes the game if so
     void Update()
     {
         if(Input.GetAxis("Quit") == 1)

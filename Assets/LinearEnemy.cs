@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿//The only enemy type in the game right now. Moves directly at the player.
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -6,33 +8,28 @@ using UnityEngine.AI;
 public class LinearEnemy : Enemy
 {
 
+
     void Start()
     {
-        enemyHandler = FindObjectOfType<EnemyHandler>();
-        body = GetComponent<Rigidbody2D>();
-        speed = 3;
+        body = GetComponent<Rigidbody2D>(); //get the body
+        speed = 3; //set the speed
 
-        coll = GetComponent<Collider2D>();
-        if (coll != null) findRad();
+        coll = GetComponent<Collider2D>(); //get the collision shape
+        if (coll != null) findRad(); //if there is a collision shape, get its radius
 
-        findPlayer();
+        findPlayer(); //get the player
     }
 
-    void Update()
-    {
-        //findPlayerPos();
-
-       // move(findPathToPlayer());
-    }
-
+    //Moves to the player
     public override void move()
     {
         
-        Vector3 dir = movementVector.normalized;
+        Vector3 dir = movementVector.normalized; //movement vector is set by the enemy player. This gets the normalized version of it
         
 
-        Vector3 vect = dir * speed;
-
+        Vector3 vect = dir * speed; //Sets the magnitude of the velocity to speed (a constant)
+        
+        //if the enemy is not stuck in a local minimum, rotates in the direction of movement, otherwise looks at the player
         if (!isInMinimum) body.rotation = Vector2.SignedAngle(Vector2.right, dir);
         else
         {
@@ -40,16 +37,17 @@ public class LinearEnemy : Enemy
             body.rotation = Vector2.SignedAngle(Vector2.right, ((Vector2)playerPos - body.position).normalized);
         }
 
-
-        body.velocity = dir * speed;
+        body.velocity = dir * speed; //sets the linear velocity of the enemy
 
     }
 
+    //Returns itself as a generic enemy
     protected override Enemy getSelfAsEnemy()
     {
         return gameObject.GetComponent<LinearEnemy>();
     }
 
+    //Returns the radius of the box collider
     protected override void findRad()
     {
         collRadius = GetComponent<BoxCollider2D>().bounds.extents.magnitude;
